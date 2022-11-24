@@ -1,6 +1,11 @@
-window.onload = function(){
-    var height = 4;
-    var width = 9;
+
+
+
+//window.onload = function(){
+
+function generate(x,y) {
+    var height = x;
+    var width = y;
 
     var vh = 70;
     var vw = (vh*width)/height;

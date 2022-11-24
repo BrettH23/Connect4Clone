@@ -3,7 +3,15 @@
     <head>
         <title>Connect4Clone</title>
         <script src="../JS/generate.js"></script>
+        <script src="../JS/reset.js"></script>
         <link rel="stylesheet" href="../CSS/game.css"> 
+            <script>
+                function hideButton()
+                 {
+                    document.getElementById("6x7").style.visibility= "hidden";
+                    document.getElementById("8x9").style.visibility= "hidden";
+                 }
+                </script>
     </head>
     <body>
         
@@ -12,7 +20,9 @@
         </section>
 
         <section>
-      
+            <!-- buttons to change size of connect 4 board-->
+            <button id = "6x7" class = "sizebtn" onclick="generate(6,7),hideButton()">6x7</button>
+            <button id = "8x9" class = "sizebtn" onclick="generate(8,9),hideButton()">8x9</button>
 
         </section>
     </body>
