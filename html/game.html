@@ -2,8 +2,15 @@
 <html lang = "en">
     <head>
         <title>Connect4Clone</title>
-        <script src="../JS/generate.js"></script>
+        <script src="../JS/generate.js" defer></script> <!-- added defer after script source because you need to load the value after canvas is made-->
+        <script src="../JS/reset.js"></script>
         <link rel="stylesheet" href="../CSS/game.css"> 
+            <script>
+                function hideButton()
+                 {
+                    document.getElementById("options").style.visibility= "hidden";
+                 }
+                </script>
     </head>
     <body>
         
@@ -11,9 +18,28 @@
                 <div id = 'heading'><h1>Connect 4</h1></div>
         </section>
 
+        <section id = "options">
+            <p> Pick Size of game board and color of players </p> 
+            <!-- buttons to change size of connect 4 board-->
+            
+            <button id = "6x7" class = "sizebtn" onclick="getSize(6,7),hideButton()">6x7</button>
+            <button id = "8x9" class = "sizebtn" onclick="getSize(8,9),hideButton()">8x9</button>
+            </section>
+        <section> <!-- we could put this in an options tab somewhere else if you want -->
+            <label for = "player1color">Player 1 Color </label> <br>
+            <input type = "color" id = "player1color" value = "#ff0000"> <br>
+            <label for = "player2color">Player 2 Color </label> <br>
+            <input type = "color" id = "player2color" value = "#ffff00"> <br>
+            <label for = "boardcolor">Board Color </label> <br>
+            <input type = "color" id = "boardcolor" value = "#0000ff"> 
+        </section>
         <section>
-      
+            <button id = "start" onclick="startGame()">Start Game</button>
+        </section>
+        <section>
 
+
+            <canvas id = "canvas"></canvas>
         </section>
     </body>
     
