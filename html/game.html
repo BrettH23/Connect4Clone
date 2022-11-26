@@ -3,14 +3,9 @@
     <head>
         <title>Connect4Clone</title>
         <script src="../JS/generate.js" defer></script> <!-- added defer after script source because you need to load the value after canvas is made-->
-        <script src="../JS/reset.js"></script>
+        <script src="../JS/options.js"></script>
         <link rel="stylesheet" href="../CSS/game.css"> 
-            <script>
-                function hideButton()
-                 {
-                    document.getElementById("options").style.visibility= "hidden";
-                 }
-                </script>
+
     </head>
     <body>
         
@@ -25,7 +20,7 @@
             <button id = "6x7" class = "sizebtn" onclick="getSize(6,7),hideButton()">6x7</button>
             <button id = "8x9" class = "sizebtn" onclick="getSize(8,9),hideButton()">8x9</button>
             </section>
-        <section> <!-- we could put this in an options tab somewhere else if you want -->
+        <section id = "colors"> <!-- we could put this in an options tab somewhere else if you want -->
             <label for = "player1color">Player 1 Color </label> <br>
             <input type = "color" id = "player1color" value = "#ff0000"> <br>
             <label for = "player2color">Player 2 Color </label> <br>
@@ -34,7 +29,7 @@
             <input type = "color" id = "boardcolor" value = "#0000ff"> 
         </section>
         <section>
-            <button id = "start" onclick="startGame()">Start Game</button>
+            <button id = "start" onclick="startGame(),hideColors()">Start Game</button>
         </section>
         <section>
 
