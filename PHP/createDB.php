@@ -33,7 +33,8 @@ $sql = "CREATE TABLE IF NOT EXISTS users (
     username VARCHAR(50) NOT NULL,
     pass VARCHAR(100) NOT NULL,
     gamesWon INT(11),
-    gamesPlayed INT(11)
+    gamesPlayed INT(11),
+    timePlayed FLOAT(20)
     )";
     
     if ($conn->query($sql) === TRUE) {
@@ -42,8 +43,8 @@ $sql = "CREATE TABLE IF NOT EXISTS users (
       echo "Error creating table: " . $conn->error ."<br>";
   }
 
-$sql2 = "INSERT INTO users (username, pass, gamesWon, gamesPlayed) VALUES ('Matt', 1, 0, 0)";
- $sql3 = "INSERT INTO users (username, pass, gamesWon, gamesPlayed) VALUES ('Brett', 1, 0, 0)";
+$sql2 = "INSERT INTO users (username, pass, gamesWon, gamesPlayed, timePlayed) VALUES ('Matt', 1, 0, 0,0)";
+$sql3 = "INSERT INTO users (username, pass, gamesWon, gamesPlayed, timePlayed) VALUES ('Brett', 1, 0, 0,0)";
 if ($conn->query($sql2) === TRUE) {
     $conn->query($sql3);
     echo "User created successfully";

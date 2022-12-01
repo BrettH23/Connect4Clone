@@ -1,57 +1,29 @@
-//window.onload = function(){
-/*
-function generate(x,y) {
-    var height = x;
-    var width = y;
 
-    var vh = 70;
-    var vw = (vh*width)/height;
-
-    var bod = document.querySelector('body');
-
-    tabl = document.createElement('table');
-    tabl.setAttribute('id','bigtable');
-    tabl.style.height = vh + 'vh';
-    tabl.style.width = vw + 'vh';
-    
-    tabr = document.createElement('tr');
-    
-    for(let i = 0;i<width;i++){
-        column = document.createElement('td');
-        contents = document.createElement('table');
-        for(let j=0;j<height;j++){
-            blockrow = document.createElement('tr');
-            blockdata = document.createElement('td');
-            
-            blockdata.setAttribute('class','square');
-            blockdata.innerHTML = j + (i*width);
-            //blockdata.style.height = vh + "vw";
-            //blockdata.style.width = vh + "vw";
-
-            blockrow.appendChild(blockdata);
-            contents.appendChild(blockrow);
-        }
-        column.appendChild(contents);
-        tabr.appendChild(column);
-    }
-    tabl.appendChild(tabr);
-
-    bod.appendChild(tabl);
-}
-*/
 // if we want to still use a table if you want. This uses the canvas element instead
 var boardW, boardH;
-function getSize(x,y) {
-    boardW = y;
-    boardH = x;
+function setSize(height_h,width_w) {
+    boardW = width_w;
+    boardH = height_h;
 
 }
 let canvas = document.getElementById("canvas");
 var ctx = canvas.getContext('2d')
-let boardArray, squareSize, color, canvasSize, playerTurn, countTurn, endGame, inRow;
+let  squareSize, color, canvasSize, playerTurn, countTurn, endGame, inRow;
+let scale = 40;
+//boardArray,
+var Board = {
+    xRecent:0,
+    yRecent:0,
+    boardArray:[],
+
+    hintX:[],
+    hintY:[]
+};
+
+
 
 function setUp(){
-    canvasSize = 800;
+    canvasSize = 1000;
     inRow = 4;
     // change colors here
     color = {
@@ -73,17 +45,19 @@ function setUp(){
 }
 
 function setUpBoard(){
-    boardArray = [];
+    Board.boardArray = [];
     for(y = 0; y < boardH; y++){
         let row = [];
         for(x = 0; x < boardW; x++){
             row.push(0);
         }
-        boardArray.push(row);
+        Board.boardArray.push(row);
     }
 }
 
 function setUpCanvas(){;
+    canvas.style.width = scale+"%";  // does not change the resolution
+    canvas.style.height = scale+"%";
     if(boardH+1 > boardW){
         canvas.height = canvasSize;
         squareSize = canvasSize / (boardH+1);
@@ -93,6 +67,7 @@ function setUpCanvas(){;
         squareSize = canvasSize / boardW;
         canvas.height =  (boardH+1) * squareSize;
     }
+    
 }
 
 function draw(){
@@ -100,7 +75,7 @@ function draw(){
     ctx.fillRect(0, 0+squareSize, boardW * squareSize, boardH * squareSize);
     for(y=0; y<boardH; y++){
         for(x=0; x<boardW; x++){
-            drawTile(x,y+1, boardArray[y][x]);
+            drawTile(x,y+1, Board.boardArray[y][x]);
         }
     }
 }
@@ -116,9 +91,11 @@ function drawTile(x, y,tileColor){
     ctx.fill();
 }
 
+
+
 function addController(){
     canvas.addEventListener("mousemove",(e)=>{
-        let posX = Math.floor((e.clientX - canvas.offsetLeft)/squareSize);
+        let posX = Math.floor(((e.clientX - canvas.offsetLeft))/(canvas.offsetWidth/boardW));
         if(!endGame){
             clearTopRow();
             topText();
@@ -126,10 +103,10 @@ function addController(){
         };
     })
     canvas.addEventListener("click",(e)=>{
-        let clickX = Math.floor((e.clientX - canvas.offsetLeft)/squareSize)
+        let clickX = Math.floor(((e.clientX - canvas.offsetLeft))/(canvas.offsetWidth/boardW))
         if(!endGame){
             for(y=boardH-1; y>=0; y--){
-                if(boardArray[y][clickX] == 0){
+                if(Board.boardArray[y][clickX] == 0){
                     playMove(clickX, y);
                     break;
                 }
@@ -140,9 +117,12 @@ function addController(){
 
 function playMove(x,y){
     countTurn++
-    boardArray[y][x] = playerTurn;
+    Board.boardArray[y][x] = playerTurn;
+    Board.xRecent = x;
+    Board.yRecent = y;
     if (checkWin()) {
-        topText("win")
+        topText("win");
+        
     } else if (checkTie()) {
         topText("tie")
     } else {
@@ -152,6 +132,7 @@ function playMove(x,y){
         drawTile(x,0, playerTurn);
     }
     draw();
+    
 }
 
 function clearTopRow(){
@@ -161,6 +142,7 @@ function clearTopRow(){
 function checkWin(){
     if(winConditions()) {
         endGame = true
+        document.getElementById("destroy").style.visibility = "visible";
         return true;   
     }
 }
@@ -192,29 +174,89 @@ function topText(text){
     ctx.fillText(line,canvas.width/2, squareSize/2);
 }
 
+function checkChain(xInc,yInc){
+    total = 0;
+    x = Board.xRecent;
+    y = Board.yRecent;
+    while(x+xInc<boardW && x+xInc>=0 && y+yInc<boardH && y+yInc>=0){
+        x+=xInc;
+        y+=yInc;
+        if(Board.boardArray[y][x] == playerTurn){
+            total++
+        }else{
+            return total;
+        }
+        
+    }
+    return total
+}
+function findHint(xInc,yInc){
+    x = Board.xRecent;
+    y = Board.yRecent;
+    while(x+xInc<boardW && x+xInc>=0 && y+yInc<boardH && y+yInc>=0){
+        x+=xInc;
+        y+=yInc;
+        if(Board.boardArray[y][x] == 0){
+            Board.hintX.push(x);
+            Board.hintY.push(y);
+            return;
+        }
+        
+    }
+}
+
 function winConditions(){
+    
+    diag130oclock = 1+checkChain(1,1)+checkChain(-1,-1);
+    diag430oclock = 1+checkChain(-1,1)+checkChain(1,-1);
+
+    horizontal = 1+checkChain(1,0)+checkChain(-1,0);
+    vertical = 1+checkChain(0,1)+checkChain(0,-1);
+
+    if(diag130oclock>3 || diag430oclock>3 || horizontal>3 || vertical>3){
+        return true;
+    }
+    if(diag130oclock == 3){
+        findHint(1,1);
+        findHint(-1,-1);
+    }
+    if(diag430oclock == 3){
+        findHint(-1,1);
+        findHint(1,-1);
+    }
+    if(horizontal == 3){
+        findHint(1,0);
+        findHint(-1,0);
+    }
+    if(vertical == 3){
+        findHint(0,1);
+        findHint(0,-1);
+    }
+    
+    /*
     for (y = 0; y<boardH; y++){ // horizontal
         for (x=0; x<boardW-3;x++){
-            if(boardArray[y][x] == playerTurn && boardArray[y][x+1] == playerTurn && boardArray[y][x+2] == playerTurn && boardArray[y][x+3] == playerTurn) return true;
+            if(Board.boardArray[y][x] == playerTurn && Board.boardArray[y][x+1] == playerTurn && Board.boardArray[y][x+2] == playerTurn && Board.boardArray[y][x+3] == playerTurn) return true;
         }
     }
     for (y=0; y<boardH-3; y++){ // vertical
         for (x=0; x<boardW;x++){
-            if(boardArray[y][x] == playerTurn && boardArray[y+1][x] == playerTurn && boardArray[y+2][x] == playerTurn && boardArray[y+3][x] == playerTurn) return true;
+            if(Board.boardArray[y][x] == playerTurn && Board.boardArray[y+1][x] == playerTurn && Board.boardArray[y+2][x] == playerTurn && Board.boardArray[y+3][x] == playerTurn) return true;
         }
     }
     
     for (y=0; y<boardH-3; y++){ // diagonal to left check
         for (x=0; x<boardW-3;x++){
-            if(boardArray[y][x] == playerTurn && boardArray[y+1][x+1] == playerTurn && boardArray[y+2][x+2] == playerTurn && boardArray[y+3][x+3] == playerTurn) return true;
+            if(Board.boardArray[y][x] == playerTurn && Board.boardArray[y+1][x+1] == playerTurn && Board.boardArray[y+2][x+2] == playerTurn && Board.boardArray[y+3][x+3] == playerTurn) return true;
         
         }
     }
     for (y=3; y<boardH; y++){ // diagonal to right check
         for (x=0; x<boardW-3;x++){
-            if(boardArray[y][x] == playerTurn && boardArray[y-1][x+1] == playerTurn && boardArray[y-2][x+2] == playerTurn && boardArray[y-3][x+3] == playerTurn) return true;
+            if(Board.boardArray[y][x] == playerTurn && Board.boardArray[y-1][x+1] == playerTurn && Board.boardArray[y-2][x+2] == playerTurn && Board.boardArray[y-3][x+3] == playerTurn) return true;
         }
     }
+    */
     return false
 }
 
@@ -224,6 +266,10 @@ function startGame() {
     setUp();
     draw();
     addController();
+}
+
+function destroyGame(){
+    window.location.reload();
 }
 
 
