@@ -9,7 +9,7 @@ function setSize(height_h,width_w) {
 let canvas = document.getElementById("canvas");
 var ctx = canvas.getContext('2d')
 let  squareSize, color, canvasSize, playerTurn, countTurn, endGame, inRow;
-let scale = 40;
+let scale = 50;
 //boardArray,
 var Board = {
     xRecent:0,
@@ -20,10 +20,14 @@ var Board = {
     hintY:[]
 };
 
-
+var rawPiece = "00 00 00 00 00 00 00 00 60 00 00 ff 60 00 00 ff 60 00 00 ff 60 00 00 ff 60 00 00 ff 60 00 00 ff 60 00 00 ff 60 00 00 ff 60 00 00 ff 60 00 00 ff 60 00 00 ff 60 00 00 ff 00 00 00 00 00 00 00 00 00 00 00 00 60 00 00 ff c2 00 00 ff c2 00 00 ff b6 00 00 ff c2 00 00 ff b6 00 00 ff b6 00 00 ff b6 00 00 ff b6 00 00 ff b6 00 00 ff b6 00 00 ff c2 00 00 ff ba 00 00 ff 60 00 00 ff 00 00 00 00 60 00 00 ff c2 00 00 ff b0 00 00 ff b0 00 00 ff b8 00 00 ff b8 00 00 ff ad 00 00 ff ad 00 00 ff ad 00 00 ff a6 00 00 ff b8 00 00 ff b8 00 00 ff a8 00 00 ff a8 00 00 ff c2 00 00 ff 60 00 00 ff 60 00 00 ff af 00 00 ff b0 00 00 ff 9e 00 00 ff 95 00 00 ff 95 00 00 ff 95 00 00 ff 95 00 00 ff 8e 00 00 ff 9a 00 00 ff 95 00 00 ff 9e 00 00 ff 99 00 00 ff b0 00 00 ff b6 00 00 ff 60 00 00 ff 60 00 00 ff ba 00 00 ff a8 00 00 ff 97 00 00 ff ae 00 00 ff ba 00 00 ff ba 00 00 ff ba 00 00 ff ba 00 00 ff ba 00 00 ff ba 00 00 ff ae 00 00 ff 95 00 00 ff a8 00 00 ff b6 00 00 ff 60 00 00 ff 60 00 00 ff af 00 00 ff a8 00 00 ff 9e 00 00 ff ba 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff c2 00 00 ff 97 00 00 ff b0 00 00 ff b6 00 00 ff 60 00 00 ff 60 00 00 ff 9f 00 00 ff a8 00 00 ff 91 00 00 ff ba 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff c2 00 00 ff 8b 00 00 ff b0 00 00 ff b6 00 00 ff 60 00 00 ff 60 00 00 ff 9f 00 00 ff a8 00 00 ff 95 00 00 ff ba 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff c2 00 00 ff 8f 00 00 ff b0 00 00 ff b6 00 00 ff 60 00 00 ff 60 00 00 ff af 00 00 ff a8 00 00 ff 95 00 00 ff ba 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff c2 00 00 ff 95 00 00 ff b0 00 00 ff b6 00 00 ff 60 00 00 ff 60 00 00 ff af 00 00 ff a8 00 00 ff 89 00 00 ff ba 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff c2 00 00 ff 95 00 00 ff b0 00 00 ff b6 00 00 ff 60 00 00 ff 60 00 00 ff af 00 00 ff a8 00 00 ff 8f 00 00 ff b2 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff cb 00 00 ff c2 00 00 ff 9e 00 00 ff b0 00 00 ff b6 00 00 ff 60 00 00 ff 60 00 00 ff b6 00 00 ff a1 00 00 ff 8f 00 00 ff aa 00 00 ff c2 00 00 ff c2 00 00 ff c2 00 00 ff c2 00 00 ff c2 00 00 ff c2 00 00 ff ba 00 00 ff 9e 00 00 ff a8 00 00 ff b6 00 00 ff 60 00 00 ff 60 00 00 ff c2 00 00 ff a1 00 00 ff 8f 00 00 ff 8e 00 00 ff 95 00 00 ff 95 00 00 ff 95 00 00 ff 95 00 00 ff 95 00 00 ff 91 00 00 ff 9e 00 00 ff 99 00 00 ff a1 00 00 ff c2 00 00 ff 60 00 00 ff 60 00 00 ff c2 00 00 ff a8 00 00 ff b0 00 00 ff b0 00 00 ff b8 00 00 ff b8 00 00 ff b0 00 00 ff b0 00 00 ff b0 00 00 ff b0 00 00 ff b8 00 00 ff b8 00 00 ff b0 00 00 ff c2 00 00 ff 60 00 00 ff 00 00 00 00 60 00 00 ff ba 00 00 ff c2 00 00 ff b6 00 00 ff b6 00 00 ff b6 00 00 ff b6 00 00 ff b6 00 00 ff b6 00 00 ff b6 00 00 ff b6 00 00 ff b6 00 00 ff c2 00 00 ff 60 00 00 ff 00 00 00 00 00 00 00 00 00 00 00 00 60 00 00 ff 60 00 00 ff 60 00 00 ff 60 00 00 ff 60 00 00 ff 60 00 00 ff 60 00 00 ff 60 00 00 ff 60 00 00 ff 60 00 00 ff 60 00 00 ff 60 00 00 ff 00 00 00 00 00 00 00 00  ";
+var tokenPieces = rawPiece.split(' ');
+var rawBoard = "00 00 75 ff 00 00 ac ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 cc ff 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 cc ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ff ff 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 ac ff 00 00 75 ff  ";
+var tokenBoard = rawBoard.split(' ');
+var tileType = [];
 
 function setUp(){
-    canvasSize = 1000;
+    canvasSize = 224;
     inRow = 4;
     // change colors here
     color = {
@@ -42,6 +46,42 @@ function setUp(){
     setUpBoard();
     setUpCanvas();
     topText();
+    
+    tileType.push(storeTile(document.getElementById("boardcolor").value,tokenBoard));
+    tileType.push(storeTile(document.getElementById("player1color").value,tokenPieces));
+    tileType.push(storeTile(document.getElementById("player2color").value,tokenPieces));
+    
+}
+
+function storeTile(color, tokenArray){
+    let colorR = parseInt(color.substring(1,3),16);
+    let colorG = parseInt(color.substring(3,5),16);
+    let colorB = parseInt(color.substring(5,7),16);
+    let masterHSV = rgbTOhsv(colorR, colorG, colorB);
+
+    tile = [];
+    for(i=0;i<16;i++){
+        for(j=0;j<16;j++){
+            pos = i*4+j*16*4;
+            
+            let thisHSV = rgbTOhsv (parseInt(tokenArray[pos],16),parseInt(tokenArray[pos+1],16),parseInt(tokenArray[pos+2],16));
+            
+            
+            thisRGB = hsvTOrgb(masterHSV.h,thisHSV.s,thisHSV.v);
+            //console.log(thisRGB);
+            
+            
+            x = {
+                r:thisRGB.substring(1,3),
+                g:thisRGB.substring(3,5),
+                b:thisRGB.substring(5,7),
+                a:tokenArray[pos+3]
+            }
+            tile.push(x);
+            //console.log(x);
+        }
+    }
+    return {pixels:tile};
 }
 
 function setUpBoard(){
@@ -69,18 +109,113 @@ function setUpCanvas(){;
     }
     
 }
+//rgbTOhsv(49,47,66);
+function rgbTOhsv(r,g,b){
+    r/=255;g/=255;b/=255;
+    max = Math.max(r,g,b);
+    min = Math.min(r,g,b);
+    delta = max-min;
+    let hue;
+    let sat;
+    let val;
+    if(delta == 0){
+        hue=0;
+    }else if(max == r){
+        hue = 360+60*((g-b)/delta);
+    }
+    else if(max == g){
+        hue = 120+60*((b-r)/delta);
+    }
+    else if(max == b){
+        hue = 240+60*((r-g)/delta);
+    }
+    hue = hue %360;
+
+    if(max == 0){
+        sat = 0;
+    }else{
+        sat = (delta/max)*100;
+    }
+
+    val = max*100;
+    let hsv = {h:hue,s:sat,v:val};
+    return hsv;
+}
+function hsvTOrgb(h,s,v){
+    s/=100;
+    v/=100;
+    
+    let c = v*s;
+    let x = c*(1-Math.abs(((h/60)%2)-1))
+    let m = v-c;
+    //console.log(c + ', '+ x + ', '+m + ', ')
+    let rgb = {};
+    //console.log(h);
+    if(h<60){
+        rgb = {r:c,g:x,b:0};
+    }else if(60<=h && h<120){
+        rgb = {r:x,g:c,b:0};
+    }else if(120<=h && h<180){
+        rgb = {r:0,g:c,b:x};
+    }else if(180<=h && h<240){
+        rgb = {r:0,g:x,b:c};
+    }else if(240<=h && h<300){
+        rgb = {r:x,g:0,b:c};
+        
+    }else if(300<=h && h<360){
+        rgb = {r:c,g:0,b:x};
+    }
+    let red = (Math.round(255*(rgb.r+m))).toString(16);
+    let green = (Math.round(255*(rgb.g+m))).toString(16);
+    let blue = (Math.round(255*(rgb.b+m))).toString(16);
+    
+    if(red.length<2){
+        red = '0'+red;
+    }
+    if(green.length<2){
+        green = '0'+green;
+    }
+    if(blue.length<2){
+        blue = '0'+blue;
+    }
+    
+    let finalrgb = '#'+ red + green + blue;
+    //console.log(finalrgb);
+    return finalrgb;
+}
 
 function draw(){
-    ctx.fillStyle = color.board;
-    ctx.fillRect(0, 0+squareSize, boardW * squareSize, boardH * squareSize);
+    //ctx.fillStyle = color.board;
+    //ctx.fillRect(0, 0+squareSize, boardW * squareSize, boardH * squareSize);
     for(y=0; y<boardH; y++){
         for(x=0; x<boardW; x++){
             drawTile(x,y+1, Board.boardArray[y][x]);
+            //console.log(Board.boardArray[y][x]);
         }
     }
 }
 
-function drawTile(x, y,tileColor){
+function drawTile(x, y,playerID){
+    
+        for(i=0;i<16;i++){
+            for(j=0;j<16;j++){
+                pos = i+j*16;
+                //console.log(playerID);
+                if(tileType[playerID].pixels[pos].a == 'ff' &&playerID>0){
+                    ctx.fillStyle  = "#"+ tileType[playerID].pixels[pos].r +tileType[playerID].pixels[pos].g +tileType[playerID].pixels[pos].b;
+                    ctx.fillRect(x*squareSize + squareSize*j/16,y*squareSize + squareSize*i/16,squareSize/16,squareSize/16);
+                }
+                if(tileType[0].pixels[pos].a == 'ff' && y>0){
+                    ctx.fillStyle  = "#"+ tileType[0].pixels[pos].r +tileType[0].pixels[pos].g +tileType[0].pixels[pos].b;
+                    ctx.fillRect(x*squareSize + squareSize*j/16,y*squareSize + squareSize*i/16,squareSize/16,squareSize/16);
+                }
+                
+            }
+        
+        }
+    
+    
+    /*
     let centerX = (x*squareSize) + (squareSize/2);
     let centerY = (y*squareSize) + (squareSize/2);
     let tileSize = (squareSize* 0.8) / 2;
@@ -88,7 +223,7 @@ function drawTile(x, y,tileColor){
     ctx.fillStyle = color.player[tileColor];
     ctx.beginPath();
     ctx.arc(centerX, centerY, tileSize, 0, 2 * Math.PI);
-    ctx.fill();
+    ctx.fill();*/
 }
 
 
