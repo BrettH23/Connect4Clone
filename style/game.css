@@ -28,7 +28,11 @@ canvas {
     margin-right: auto;
     display: block;
     width: 800px;
+}@font-face {
+    font-family: RORsquare;
+    src: url('riskofrainsquare.ttf');
 }
 body{
-    background-color: #00c3ff;
+    font-family: RORsquare,sans-serif;
+    background-image:linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url('Background.jpg') ;
 }

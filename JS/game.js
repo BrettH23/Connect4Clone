@@ -9,7 +9,7 @@ function setSize(height_h,width_w) {
 let canvas = document.getElementById("canvas");
 var ctx = canvas.getContext('2d')
 let  squareSize, color, canvasSize, playerTurn, countTurn, endGame, inRow;
-let scale = 50;
+let scale = 35;
 //boardArray,
 var Board = {
     xRecent:0,
@@ -27,7 +27,7 @@ var tokenBoard = rawBoard.split(' ');
 var tileType = [];
 
 function setUp(){
-    canvasSize = boardW*16;
+    canvasSize = boardW*16*2;//aka resolution of canvas, boardwidth*pixel amount of tile*scale factor
     inRow = 4;
     // change colors here
     color = {
