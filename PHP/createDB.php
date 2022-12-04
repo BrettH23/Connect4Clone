@@ -1,10 +1,6 @@
 <?php
-//Run this file before you start 
-$servername = "localhost";
-$username = "matt"; // change username and pass if you want Brett
-$password = "matt";
-$dbname = "connect4";
 
+include_once 'preference_config.php';
 // Create connection
 $conn = new mysqli($servername, $username, $password);
 
@@ -28,10 +24,9 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 } 
-$sql = "CREATE TABLE IF NOT EXISTS users (
+$sql = "CREATE TABLE IF NOT EXISTS userdata (
     playerIndex INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL,
-    pass VARCHAR(100) NOT NULL,
     gamesWon INT(11),
     gamesPlayed INT(11),
     timePlayed FLOAT(20)
@@ -41,16 +36,6 @@ $sql = "CREATE TABLE IF NOT EXISTS users (
       echo "table created successfully<br>";
   } else {
       echo "Error creating table: " . $conn->error ."<br>";
-  }
-
-$sql2 = "INSERT INTO users (username, pass, gamesWon, gamesPlayed, timePlayed) VALUES ('Matt', 1, 0, 0,0)";
-$sql3 = "INSERT INTO users (username, pass, gamesWon, gamesPlayed, timePlayed) VALUES ('Brett', 1, 0, 0,0)";
-if ($conn->query($sql2) === TRUE) {
-    $conn->query($sql3);
-    echo "User created successfully";
-    
-  } else {
-    echo "Error creating database: " . $conn2->error;
   }
 
 $conn->close();

@@ -27,7 +27,7 @@ var tokenBoard = rawBoard.split(' ');
 var tileType = [];
 
 function setUp(){
-    canvasSize = 224;
+    canvasSize = boardW*16;
     inRow = 4;
     // change colors here
     color = {
