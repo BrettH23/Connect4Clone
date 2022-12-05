@@ -1,29 +1,28 @@
 <!DOCTYPE html>
 <html lang = "en">
     <head>
+        <link rel="stylesheet" href="../style/universal.css"> 
         <link rel="stylesheet" href="../style/index.css"> 
+        
     </head>
     <body>
         
-        <section>
-                <div id = 'top'><h1>Connect 4</h1></div>
-        </section>
+        
+        <header ><h1 class = 'center'>Connect 4</h1></header>
+        
 
-        <section>
-            <div id = "menu">
-                <input type = button onClick="location.href='game.html'" value='Connect 4'><br>
-                <input type = button onClick="location.href='help.html'" value='Help'><br>
-                <input type = button onClick="location.href='contact.html'" value='Contact'><br>
-                <input type = button onClick="location.href='login.html'" value='Login'><br>
-                <input type = button onClick="location.href='leaderboard.html'" value='Leaderboard'><br>
-                <input type = button onClick="location.href='../login/login.php'" value='Login'><br>
-                <input type = button onClick="location.href='../php/initializeAllDB.php'" value='Initialize Database'><br>
-            </div>
-        </section>
-        <section>
-
+        <section id = "menu">
+            
+            <p onClick="location.href='game.html'">Play Connect 4</p><br>
+            <p onClick="location.href='help.html'">Help</p><br>
+            <p onClick="location.href='contact.html'">Contact</p><br>
+            <p onClick="location.href='../login/login.php'" >Log in</p><br>
+            <p onClick="location.href='../login/logout.php'" >Log out</p><br>
+            <p onClick="location.href='leaderboard.html'">View Leaderboard</p><br>
+            <p onClick="location.href='../php/initializeAllDB.php'">Initialize Database</p><br>
             
         </section>
+        
     </body>
     
 </html>

@@ -1,0 +1,13 @@
+@font-face {
+    font-family: RORsquare;
+    src: url('riskofrainsquare.ttf');
+}
+body{
+    font-family: RORsquare,sans-serif;
+    background-image:linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url('Background.jpg') ;
+    color: white;
+    font-size: 200%;
+}
+.center{
+    text-align: center;
+}

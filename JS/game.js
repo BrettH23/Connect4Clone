@@ -9,13 +9,20 @@ function setSize(height_h,width_w) {
 let canvas = document.getElementById("canvas");
 var ctx = canvas.getContext('2d')
 let  squareSize, color, canvasSize, playerTurn, countTurn, endGame, inRow;
-let scale = 35;
+let scale = 65;
+
+const startTime = new Date();
 //boardArray,
 var Board = {
     xRecent:0,
     yRecent:0,
     boardArray:[],
 
+    totalThrees : {
+        1:0,
+        2:0
+    },
+    hintColor:[],
     hintX:[],
     hintY:[]
 };
@@ -27,7 +34,7 @@ var tokenBoard = rawBoard.split(' ');
 var tileType = [];
 
 function setUp(){
-    canvasSize = boardW*16*2;//aka resolution of canvas, boardwidth*pixel amount of tile*scale factor
+    canvasSize = boardW*16*8;//aka resolution of canvas, boardwidth*pixel amount of tile*scale factor
     inRow = 4;
     // change colors here
     color = {
@@ -40,6 +47,7 @@ function setUp(){
         "tileShadow": "black",
         "textColor": "black"
     };
+    
     playerTurn = 1;
     countTurn = 0;
     endGame = false;
@@ -50,24 +58,29 @@ function setUp(){
     tileType.push(storeTile(document.getElementById("boardcolor").value,tokenBoard));
     tileType.push(storeTile(document.getElementById("player1color").value,tokenPieces));
     tileType.push(storeTile(document.getElementById("player2color").value,tokenPieces));
-    
+
+    document.getElementById("p1-info").style.color = document.getElementById("player1color").value;
+    document.getElementById("p2-info").style.color = document.getElementById("player2color").value;
+    updateHints();
 }
 
 function storeTile(color, tokenArray){
     let colorR = parseInt(color.substring(1,3),16);
     let colorG = parseInt(color.substring(3,5),16);
     let colorB = parseInt(color.substring(5,7),16);
-    let masterHSV = rgbTOhsv(colorR, colorG, colorB);
+    let selectedHSV = rgbTOhsv(colorR, colorG, colorB);
 
     tile = [];
     for(i=0;i<16;i++){
         for(j=0;j<16;j++){
             pos = i*4+j*16*4;
             
-            let thisHSV = rgbTOhsv (parseInt(tokenArray[pos],16),parseInt(tokenArray[pos+1],16),parseInt(tokenArray[pos+2],16));
+            let defaultHSV = rgbTOhsv (parseInt(tokenArray[pos],16),parseInt(tokenArray[pos+1],16),parseInt(tokenArray[pos+2],16));
             
             
-            thisRGB = hsvTOrgb(masterHSV.h,thisHSV.s,thisHSV.v);
+            let newV = (defaultHSV.v/100)*selectedHSV.v;
+            
+            thisRGB = hsvTOrgb(selectedHSV.h,selectedHSV.s,newV);
             //console.log(thisRGB);
             
             
@@ -267,7 +280,7 @@ function playMove(x,y){
         drawTile(x,0, playerTurn);
     }
     draw();
-    
+    updateHints();
 }
 
 function clearTopRow(){
@@ -278,6 +291,7 @@ function checkWin(){
     if(winConditions()) {
         endGame = true
         document.getElementById("destroy").style.visibility = "visible";
+        document.getElementById("menuButton").style.visibility = "visible";
         return true;   
     }
 }
@@ -296,13 +310,14 @@ function switchPlayer(){
 function topText(text){
     clearTopRow(); // clear the top row 
     let line;
+    let topTextColor = color.textColor;
     switch(text){
-        case "win": line = `CONNECT 4 - Player ${playerTurn} wins!`; break;
+        case "win": line = `CONNECT 4 - Player ${playerTurn} wins!`; topTextColor = color.player[playerTurn]; break;
         case "tie": line = `CONNECT 4 - Draw!`; break;
         default: line = `CONNECT 4`; break;
     };
-    ctx.fillStyle = color.textColor;
-    ctx.font = "bold 20px Arial";   // change font size and type here
+    ctx.fillStyle = topTextColor;
+    ctx.font = "bold 50px RORsquare";   // change font size and type here
 
     ctx.textAlign = "center"; 
     ctx.textBaseline = "middle"; 
@@ -332,12 +347,15 @@ function findHint(xInc,yInc){
         x+=xInc;
         y+=yInc;
         if(Board.boardArray[y][x] == 0){
+            
+            Board.hintColor.push(playerTurn);
             Board.hintX.push(x);
             Board.hintY.push(y);
-            return;
+            return true;
         }
         
     }
+    return false
 }
 
 function winConditions(){
@@ -352,21 +370,26 @@ function winConditions(){
         return true;
     }
     if(diag130oclock == 3){
-        findHint(1,1);
-        findHint(-1,-1);
+        if(findHint(1,1) || findHint(-1,-1)){
+            Board.totalThrees[playerTurn]++;
+        }
     }
     if(diag430oclock == 3){
-        findHint(-1,1);
-        findHint(1,-1);
+        if(findHint(-1,1) || findHint(1,-1)){
+            Board.totalThrees[playerTurn]++;
+        }
     }
     if(horizontal == 3){
-        findHint(1,0);
-        findHint(-1,0);
+        if(findHint(1,0) || findHint(-1,0)){
+            Board.totalThrees[playerTurn]++;
+        }
     }
     if(vertical == 3){
-        findHint(0,1);
-        findHint(0,-1);
+        if(findHint(0,1) || findHint(0,-1)){
+            Board.totalThrees[playerTurn]++;
+        }
     }
+    
     
     /*
     for (y = 0; y<boardH; y++){ // horizontal
@@ -393,6 +416,27 @@ function winConditions(){
     }
     */
     return false
+}
+
+function updateHints(){
+    let p1threes = document.querySelector("#p1-total-threes");
+    let p2threes = document.querySelector("#p2-total-threes");
+    let p1hints = document.querySelector("#p1-hints");
+    let p2hints = document.querySelector("#p2-hints");
+    p1threes.innerHTML = "Has " + Board.totalThrees[1] + " connect-threes.";
+    p2threes.innerHTML = "Has " + Board.totalThrees[2] + " connect-threes.";
+
+    hintStr = {
+        1 : "Should target spaces: ",
+        2 : "Should target spaces: "
+    };
+    for(i in Board.hintColor){
+        if(Board.boardArray[Board.hintY[i]][Board.hintX[i]]==[0]){
+            hintStr[Board.hintColor[i]] += '('+(1+Board.hintX[i])+','+ (boardH- Board.hintY[i])+')';
+        }
+    }
+    p1hints.innerHTML = hintStr[1];
+    p2hints.innerHTML = hintStr[2];
 }
 
 
