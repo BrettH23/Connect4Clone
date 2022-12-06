@@ -29,6 +29,7 @@ $sql = "CREATE TABLE IF NOT EXISTS userdata (
     username VARCHAR(50) NOT NULL,
     gamesWon INT(11),
     gamesPlayed INT(11),
+    gamesLost INT(11),
     timePlayed FLOAT(20)
     )";
     
