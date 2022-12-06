@@ -114,32 +114,39 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <head>
     <meta charset="UTF-8">
     <title>Sign Up</title>
+    <link rel="stylesheet" href="../style/universal.css"> 
+    <link rel="stylesheet" href="../style/index.css"> 
 </head>
 <body>
     <div>
-        <h2>Sign Up</h2>
+        <h2 class="center">Sign Up</h2>
         <p>Please fill this form to create an account.</p>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
+            <p <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
                 <label>Username:<sup>*</sup></label>
                 <input type="text" name="username" value="<?php echo $username; ?>">
                 <span><?php echo $username_err; ?></span>
-            </div>    
-            <div <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
+            </p>    
+            <p <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
                 <label>Password:<sup>*</sup></label>
                 <input type="password" name="password" value="<?php echo $password; ?>">
                 <span><?php echo $password_err; ?></span>
-            </div>
-            <div <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
+            </p>
+            <p <?php echo (!empty($confirm_password_err)) ? 'has-error' : ''; ?>">
                 <label>Confirm Password:<sup>*</sup></label>
                 <input type="password" name="confirm_password" value="<?php echo $confirm_password; ?>">
                 <span><?php echo $confirm_password_err; ?></span>
-            </div>
-            <div>
-                <input type="submit" value="Submit">
-                <input type="reset"  value="Reset">
-            </div>
-            <p>Already have an account? <a href="login.php">Login here</a>.</p>
+            </p>
+            <p onclick="document.querySelector('#thisform').submit()" >
+                Submit
+                <input type="submit"  value="Submit" hidden>
+            </p>
+            <p onclick="document.querySelector('#thisreset').click()">
+                Reset
+                <input id="thisreset" type="reset"  value="Reset" hidden>
+            </p>
+            <p onClick="location.href='../login/login.php'">Have an account? Log in here</p>
+            <p onClick="location.href='../html/index.html'">Main Menu</p><br>
         </form>
     </div>    
 </body>

@@ -1,12 +1,12 @@
 function hideButton() {
-    document.getElementById("options").style.visibility= "hidden";
+    document.getElementById("buttons").style.display= "none";
     document.getElementById("start").style.visibility = "visible";
 }
 
-function hideColors() {
-    document.getElementById("colors").style.visibility= "hidden";
+function hideOptions() {
+    document.getElementById("options").style.display= "none";
 }
 
-function hideStart(){
-    document.getElementById("start").style.visibility = "hidden";
+function revealData(){
+    document.getElementById("game-data").removeAttribute("hidden");
 }

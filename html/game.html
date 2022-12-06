@@ -5,41 +5,61 @@
         <script src="../JS/game.js" defer></script> <!-- added defer after script source because you need to load the value after canvas is made-->
         <script src="../JS/options.js"></script>
         
+        <link rel="stylesheet" href="../style/universal.css"> 
         <link rel="stylesheet" href="../style/game.css"> 
 
     </head>
     <body>
         
-        <header id = 'heading'>
-                <h1>Connect 4</h1>
-        </header>
 
-        <section id = "options">
-            <p> Pick Size of game board and color of players </p> 
-            <!-- buttons to change size of connect 4 board-->
-            
-            <button id = "6x7" class = "sizebtn" onclick="setSize(6,7),hideButton()">6x7</button>
-            <button id = "8x9" class = "sizebtn" onclick="setSize(8,9),hideButton()">8x9</button>
+        
+        <aside id="sidebar"> <!-- we could put this in an options tab somewhere else if you want -->
+            <h1 class="center">Connect 4</h1>
+            <section id = "options" >
+                <p> Pick Size of game board and color of players </p> 
+                <!-- buttons to change size of connect 4 board-->
+                
+                <section id = "colors">
+                    <label for = "player1color">Player 1 Color </label> <br>
+                    <input type = "color" id = "player1color" value = "#ff0000"> <br>
+                    <label for = "player2color">Player 2 Color </label> <br>
+                    <input type = "color" id = "player2color" value = "#ffff00"> <br>
+                    <label for = "boardcolor">Board Color </label> <br>
+                    <input type = "color" id = "boardcolor" value = "#0000ff"> <br>
+                    <section id="buttons">
+                        <button id = "6x7" class = "sizebtn" onclick="setSize(6,7),hideButton()">6x7</button>
+                        <button id = "8x9" class = "sizebtn" onclick="setSize(8,9),hideButton()">8x9</button>
+                    </section>
+                    
+                    <button id = "start" onclick="startGame(),hideOptions(),revealData()" style="visibility: hidden">Start Game</button><br>
+                </section>
+                
             </section>
-        <section  style="position:fixed"> <!-- we could put this in an options tab somewhere else if you want -->
-            <section id = "colors">
-                <label for = "player1color">Player 1 Color </label> <br>
-                <input type = "color" id = "player1color" value = "#ff0000"> <br>
-                <label for = "player2color">Player 2 Color </label> <br>
-                <input type = "color" id = "player2color" value = "#ffff00"> <br>
-                <label for = "boardcolor">Board Color </label> <br>
-                <input type = "color" id = "boardcolor" value = "#0000ff"> <br>
-            </section>
-            <section>
-                <button id = "start" onclick="startGame(),hideColors(),hideStart()" style="visibility: hidden">Start Game</button><br>
+
+            <section id="game-data" hidden>
+                <h1>Info:</h1><br>
+                <section id="p1-info" class="pop">
+                    Player 1:<br>
+                    <p id="p1-total-threes">has x threes</p>
+                    <p id="p1-hints">Should target positions:</p>
+                </section><br>
+                <section id="p2-info" class="pop">
+                    Player 2:<br>
+                    <p id="p2-total-threes">has x threes</p>
+                    <p id="p2-hints">Should target positions:</p>
+                </section>
+               
+                
                 <button id ="destroy" onclick="destroyGame()" style="visibility: hidden">Play again?</button>
+                <button id ="menuButton" onClick="location.href='index.html'" style="visibility: hidden">Back to Menu</button>
             </section>
-        </section>
+        </aside>
         
         
         <section id="canvas-holder">
             <canvas id = "canvas" style="image-rendering:pixelated  "></canvas>
         </section>
+        
     </body>
     
 </html>

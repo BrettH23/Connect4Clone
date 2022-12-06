@@ -76,26 +76,33 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
+    <link rel="stylesheet" href="../style/universal.css"> 
+    <link rel="stylesheet" href="../style/index.css"> 
 </head>
 <body>
     <div>
-        <h2>Login</h2>
+        <header><h2 class="center">Login</h2></header>
         <p>Please fill in your credentials to login.</p>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div  <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
+        
+        <form id="thisform" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+            
+            <p  <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>>
                 <label>Username:<sup>*</sup></label>
                 <input type="text" name="username" value="<?php echo $username; ?>">
                 <span><?php echo $username_err; ?></span>
-            </div>    
-            <div <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>">
+            </p>
+
+            
+            <p <?php echo (!empty($password_err)) ? 'has-error' : ''; ?>>
                 <label>Password:<sup>*</sup></label>
                 <input type="password" name="password">
                 <span><?php echo $password_err; ?></span>
-            </div>
-            <div>
-                <input type="submit" value="Submit">
-            </div>
-            <p>Don't have an account? <a href="register.php">Sign up now</a>.</p>
+            </p>
+            
+            <p onclick="document.querySelector('#thisform').submit()">
+                Submit<input type="submit" hidden>
+            </p>
+            <p onClick="location.href='../login/register.php'">No account? Click here to sign up.</p>
         </form>
     </div>    
 </body>

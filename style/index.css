@@ -1,4 +1,16 @@
 #menu {
-    border: 5px solid #000000;
     text-align: center;
-    }
+}
+
+p{
+    margin:auto;
+    margin-top: 1%;
+    
+
+    
+    border: 5px solid #FFF;
+    width: 40%;
+    
+    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+    
+}
