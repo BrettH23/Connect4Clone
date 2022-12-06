@@ -5,12 +5,16 @@
 p{
     margin:auto;
     margin-top: 1%;
-    
-
+    text-align: center;
+    padding-left: 1%;
+    padding-right: 1%;
     
     border: 5px solid #FFF;
     width: 40%;
     
-    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
+    background-color: rgba(0,0,0,0.3);
     
+}
+p[onclick]:hover{
+    background-color: rgba(0, 0, 255,0.7);
 }
