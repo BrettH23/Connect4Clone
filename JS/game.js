@@ -11,13 +11,13 @@ var ctx = canvas.getContext('2d')
 let  squareSize, color, canvasSize, playerTurn, countTurn, endGame, inRow;
 let scale = 65;
 
-const startTime = new Date();
+
 //boardArray,
 var Board = {
     xRecent:0,
     yRecent:0,
     boardArray:[],
-
+    turnMoves:[],
     totalThrees : {
         1:0,
         2:0
@@ -32,6 +32,34 @@ var tokenPieces = rawPiece.split(' ');
 var rawBoard = "00 00 75 ff 00 00 ac ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 ff ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 cc ff 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 cc ff 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 ff ff 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ac ff 00 00 75 ff 00 00 75 ff 00 00 ac ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 cc ff 00 00 ff ff 00 00 ac ff 00 00 75 ff  ";
 var tokenBoard = rawBoard.split(' ');
 var tileType = [];
+
+var startTime;
+const timer = document.getElementById('timer');
+var timerAlive = true;
+var elapsedTime;
+function startTimer(){
+    startTime = new Date();
+    tickTimer();  
+}
+
+function tickTimer(){
+    elapsedTime = new Date();
+    let x = (elapsedTime-startTime)/1000;
+    
+    
+    minutes = Math.floor(x/60);
+    seconds = Math.floor(x%60);
+    sec0 = '';
+    if(seconds<10){
+        sec0 = '0';
+    }
+
+    if(timerAlive){
+        timer.innerHTML = "Time Elapsed: "+minutes+':'+sec0 + seconds;
+        window.setTimeout(function() { tickTimer() }, 1000);
+    }
+}
+
 
 function setUp(){
     canvasSize = boardW*16*8;//aka resolution of canvas, boardwidth*pixel amount of tile*scale factor
@@ -105,6 +133,14 @@ function setUpBoard(){
             row.push(0);
         }
         Board.boardArray.push(row);
+    }
+    Board.turnMoves = [];
+    for(y = 0; y < boardH; y++){
+        let row = [];
+        for(x = 0; x < boardW; x++){
+            row.push(0);
+        }
+        Board.turnMoves.push(row);
     }
 }
 
@@ -226,7 +262,18 @@ function drawTile(x, y,playerID){
             }
         
         }
-    
+        if(y>0){
+            if(Board.turnMoves[y-1][x]>0){
+                ctx.fillStyle = '#000';
+                ctx.font = "bold 50px RORsquare";   // change font size and type here
+
+                ctx.textAlign = "center"; 
+                ctx.textBaseline = "middle"; 
+                ctx.fillText(Board.turnMoves[y-1][x],x*squareSize+squareSize/2, y*squareSize+squareSize/2);
+            }
+            
+        }
+        
     
     /*
     let centerX = (x*squareSize) + (squareSize/2);
@@ -255,7 +302,7 @@ function addController(){
         if(!endGame){
             for(y=boardH-1; y>=0; y--){
                 if(Board.boardArray[y][clickX] == 0){
-                    playMove(clickX, y);
+                    playMove(clickX, y,countTurn);
                     break;
                 }
             }
@@ -263,9 +310,10 @@ function addController(){
     })
 }
 
-function playMove(x,y){
+function playMove(x,y,turnInsidePieceNumber){
     countTurn++
     Board.boardArray[y][x] = playerTurn;
+    Board.turnMoves[y][x] = turnInsidePieceNumber+1;//neccesary to prevent super power from breaking turn piece order
     Board.xRecent = x;
     Board.yRecent = y;
     if (checkWin()) {
@@ -292,6 +340,7 @@ function checkWin(){
         endGame = true
         document.getElementById("destroy").style.visibility = "visible";
         document.getElementById("menuButton").style.visibility = "visible";
+        timerAlive=false;
         return true;   
     }
 }
@@ -299,6 +348,9 @@ function checkWin(){
 function checkTie() { // very easy way to check for a tie game. Full board and no win
     if(countTurn == boardW * boardH){
         endGame = true;
+        document.getElementById("destroy").style.visibility = "visible";
+        document.getElementById("menuButton").style.visibility = "visible";
+        timerAlive=false;
         return true;  
     }
 }
@@ -441,14 +493,18 @@ function updateHints(){
 
 
 function startGame() {
-
+    
     setUp();
     draw();
     addController();
+    startTimer();
 }
 
 function destroyGame(){
     window.location.reload();
 }
 
+function superPower(){
+
+}
 

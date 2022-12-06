@@ -103,6 +103,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 Submit<input type="submit" hidden>
             </p>
             <p onClick="location.href='../login/register.php'">No account? Click here to sign up.</p>
+            <p onClick="location.href='../html/index.html'">Main Menu</p><br>
         </form>
     </div>    
 </body>
