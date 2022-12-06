@@ -1,10 +1,32 @@
 <!DOCTYPE html>
 <html lang = "en">
     <head>
-
+        <link rel="stylesheet" href="../style/leaderboard.css"> 
+        <script src = "../JS/leaderboard.js"></script>
     </head>
     <body>
         <header>Leaderboard page</header>
 
-    </body>
+
+        <section>
+            <table id="leaderboardtable">
+                
+                <th> <button type="button" onclick="leaderboard(0)">Username</button> </th>
+                <th> <button type="button" onclick="leaderboard(1)">Wins/Descending</button>
+                    <button type="button" onclick="leaderboard(2)">Wins/Ascending</button></th>
+                <th> <button type="button" onclick="leaderboard(3)">Time Played/Descending</button>
+                    <button type="button" onclick="leaderboard(4)">Time Played/Ascending</button> </th>
+                <th> <button type="button" onclick="leaderboard(5)">Games Played/Descending</button>
+                    <button type="button" onclick="leaderboard(6)">Games Played/Ascending</button> </th>
+                <th> <button type="button" onclick="leaderboard(7)">Lost Played/Descending</button> 
+                    <button type="button" onclick="leaderboard(8)">Lost Played/Ascending</button></th>
+                
+                <tbody id="tablebody">
+                
+                </tbody>
+            </table>
+            
+            
+        </body>
 </html>
+

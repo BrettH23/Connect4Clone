@@ -4,8 +4,8 @@ include_once 'preference_config.php';
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-$sql = "INSERT INTO userdata (username, gamesWon, gamesPlayed, timePlayed) VALUES ('Matt', 0, 0,0);";
-$sql.= "INSERT INTO userdata (username, gamesWon, gamesPlayed, timePlayed) VALUES ('Brett', 0, 0,0);";
+$sql = "INSERT INTO userdata (username, gamesWon, gamesPlayed, gamesLost, timePlayed) VALUES ('Matt', 50, 100, 50, 20);";
+$sql.= "INSERT INTO userdata (username, gamesWon, gamesPlayed, gamesLost, timePlayed) VALUES ('Brett', 10, 15, 5, 0);";
 
 
 if ($conn->multi_query($sql) === TRUE) {

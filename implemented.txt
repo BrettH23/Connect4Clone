@@ -1,0 +1,11 @@
+Matthew Do - 
+11/10 - Default pages created
+11/16 - Game display and colors
+11/18 - Game logic done
+11/20 - Database creation script done
+11/30 - Leaderboard Done
+
+
+Bretton Harris - 
+11/28 -  
+11/30 - Login system
