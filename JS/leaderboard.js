@@ -30,18 +30,18 @@ function displayData() {
         let row = document.createElement('tr');
         let username = document.createElement('td');
         let gamesWon = document.createElement('td');
-        let timeplayed = document.createElement('td');
+        let timePlayed = document.createElement('td');
         let gamesPlayed = document.createElement('td');
         let gamesLost = document.createElement('td');
         username.innerHTML = data[i]['username'];
         gamesWon.innerHTML = data[i]['gamesWon'];
-        timeplayed.innerHTML = data[i]['timePlayed'];
+        timePlayed.innerHTML = data[i]['timePlayed'];
         gamesPlayed.innerHTML = data[i]['gamesPlayed'];
         gamesLost.innerHTML = data[i]['gamesLost'];
         
         row.appendChild(username);
         row.appendChild(gamesWon);
-        row.appendChild(timeplayed);
+        row.appendChild(timePlayed);
         row.appendChild(gamesPlayed);
         row.appendChild(gamesLost);
         
