@@ -7,7 +7,11 @@
         
         <link rel="stylesheet" href="../style/universal.css"> 
         <link rel="stylesheet" href="../style/game.css"> 
-
+        <style>
+            p{
+                padding: 1%;
+            }
+        </style>
     </head>
     <body>
         
@@ -42,14 +46,16 @@
                     <p class="pop">timer</p>
                 </section>
                 <section id="p1-info" class="pop">
-                    Player 1:<br>
+                    <p>Player 1:</p>
                     <p id="p1-total-threes">has x threes</p>
                     <p id="p1-hints">Should target positions:</p>
+                    <button id="power1" onclick="superPower(1)">Flip the Game</button>
                 </section><br>
                 <section id="p2-info" class="pop">
-                    Player 2:<br>
+                    <p>Player 2:</p>
                     <p id="p2-total-threes">has x threes</p>
                     <p id="p2-hints">Should target positions:</p>
+                    <button id="power2" onclick="superPower(2)">Flip the Game</button>
                 </section>
                
                 

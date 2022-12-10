@@ -10,8 +10,8 @@ let canvas = document.getElementById("canvas");
 var ctx = canvas.getContext('2d')
 let  squareSize, color, canvasSize, playerTurn, countTurn, endGame, inRow;
 let scale = 65;
-
-
+var victor = 0;
+let paused = false;
 //boardArray,
 var Board = {
     xRecent:0,
@@ -297,12 +297,20 @@ function addController(){
             drawTile(posX, 0, playerTurn);
         };
     })
+    canvas.addEventListener("mouseleave",(e)=>{
+        //let posX = Math.floor(((e.clientX - canvas.offsetLeft))/(canvas.offsetWidth/boardW));
+        if(!endGame){
+            clearTopRow();
+            topText();
+            //drawTile(posX, 0, playerTurn);
+        };
+    })
     canvas.addEventListener("click",(e)=>{
         let clickX = Math.floor(((e.clientX - canvas.offsetLeft))/(canvas.offsetWidth/boardW))
-        if(!endGame){
+        if(!endGame && !paused){
             for(y=boardH-1; y>=0; y--){
                 if(Board.boardArray[y][clickX] == 0){
-                    playMove(clickX, y,countTurn);
+                    playMove(clickX, y,countTurn,playerTurn);
                     break;
                 }
             }
@@ -310,9 +318,9 @@ function addController(){
     })
 }
 
-function playMove(x,y,turnInsidePieceNumber){
+function playMove(x,y,turnInsidePieceNumber,currentTurn){
     countTurn++
-    Board.boardArray[y][x] = playerTurn;
+    Board.boardArray[y][x] = currentTurn;
     Board.turnMoves[y][x] = turnInsidePieceNumber+1;//neccesary to prevent super power from breaking turn piece order
     Board.xRecent = x;
     Board.yRecent = y;
@@ -364,7 +372,7 @@ function topText(text){
     let line;
     let topTextColor = color.textColor;
     switch(text){
-        case "win": line = `CONNECT 4 - Player ${playerTurn} wins!`; topTextColor = color.player[playerTurn]; break;
+        case "win": line = `CONNECT 4 - Player ${victor} wins!`; topTextColor = color.player[victor]; break;
         case "tie": line = `CONNECT 4 - Draw!`; break;
         default: line = `CONNECT 4`; break;
     };
@@ -380,10 +388,11 @@ function checkChain(xInc,yInc){
     total = 0;
     x = Board.xRecent;
     y = Board.yRecent;
+    chainColor = Board.boardArray[y][x];
     while(x+xInc<boardW && x+xInc>=0 && y+yInc<boardH && y+yInc>=0){
         x+=xInc;
         y+=yInc;
-        if(Board.boardArray[y][x] == playerTurn){
+        if(Board.boardArray[y][x] == chainColor){
             total++
         }else{
             return total;
@@ -395,17 +404,24 @@ function checkChain(xInc,yInc){
 function findHint(xInc,yInc){
     x = Board.xRecent;
     y = Board.yRecent;
-    while(x+xInc<boardW && x+xInc>=0 && y+yInc<boardH && y+yInc>=0){
-        x+=xInc;
-        y+=yInc;
+    chainColor = Board.boardArray[y][x];
+    while(x<boardW && x>=0 && y<boardH && y>=0){
+        
         if(Board.boardArray[y][x] == 0){
+        
+            for(let i = 0;i<Board.hintX.length;i++){//prevents dupes
+                if(Board.hintX[i] == x && Board.hintY[i] == y){
+                    return false;
+                }
+            }
             
-            Board.hintColor.push(playerTurn);
+            Board.hintColor.push(chainColor);
             Board.hintX.push(x);
             Board.hintY.push(y);
             return true;
         }
-        
+        x+=xInc;
+        y+=yInc;
     }
     return false
 }
@@ -417,28 +433,37 @@ function winConditions(){
 
     horizontal = 1+checkChain(1,0)+checkChain(-1,0);
     vertical = 1+checkChain(0,1)+checkChain(0,-1);
-
+    chainColor = Board.boardArray[Board.yRecent][Board.xRecent];
     if(diag130oclock>3 || diag430oclock>3 || horizontal>3 || vertical>3){
+        victor=chainColor;
         return true;
     }
     if(diag130oclock == 3){
-        if(findHint(1,1) || findHint(-1,-1)){
-            Board.totalThrees[playerTurn]++;
+        let hintCheck1 = findHint(1,1);//Js is lazy. If it's in an or statement, and one of them is true, it will stop executing, problem since findhint is doing work
+        let hintCheck2 = findHint(-1,-1); 
+        if( hintCheck1||hintCheck2 ){
+            Board.totalThrees[chainColor]++;
         }
     }
     if(diag430oclock == 3){
-        if(findHint(-1,1) || findHint(1,-1)){
-            Board.totalThrees[playerTurn]++;
+        let hintCheck1 = findHint(-1,1);
+        let hintCheck2 = findHint(1,-1); 
+        if( hintCheck1|| hintCheck2){
+            Board.totalThrees[chainColor]++;
         }
     }
     if(horizontal == 3){
-        if(findHint(1,0) || findHint(-1,0)){
-            Board.totalThrees[playerTurn]++;
+        let hintCheck1 = findHint(1,0);
+        let hintCheck2 = findHint(-1,0); 
+        if(hintCheck1 ||hintCheck2 ){
+            Board.totalThrees[chainColor]++;
         }
     }
     if(vertical == 3){
-        if(findHint(0,1) || findHint(0,-1)){
-            Board.totalThrees[playerTurn]++;
+        let hintCheck1 = findHint(0,1);
+        let hintCheck2 = findHint(0,-1); 
+        if( hintCheck1||hintCheck2 ){
+            Board.totalThrees[chainColor]++;
         }
     }
     
@@ -482,13 +507,14 @@ function updateHints(){
         1 : "Should target spaces: ",
         2 : "Should target spaces: "
     };
-    for(i in Board.hintColor){
+    for(let i = 0;i<  Board.hintColor.length;i++){
         if(Board.boardArray[Board.hintY[i]][Board.hintX[i]]==[0]){
             hintStr[Board.hintColor[i]] += '('+(1+Board.hintX[i])+','+ (boardH- Board.hintY[i])+')';
         }
     }
     p1hints.innerHTML = hintStr[1];
     p2hints.innerHTML = hintStr[2];
+    //console.log(Board.hintColor)
 }
 
 
@@ -503,8 +529,66 @@ function startGame() {
 function destroyGame(){
     window.location.reload();
 }
+var hasPower = {
+    1:true,
+    2:true
+}
+function superPower(target){
+    if(target==playerTurn && !endGame && hasPower[target]){//Players can go on their turn only
+        
+        paused=true;
+        document.getElementById('power'+target).innerHTML = "Depleted";
+        hasPower[target] = false;
+        let oldBoardArr = JSON.parse(JSON.stringify(Board.boardArray));
+        let oldTurnArr = JSON.parse(JSON.stringify(Board.turnMoves));
 
-function superPower(){
+        for(y = 0; y < boardH; y++){
+            for(x = 0; x < boardW; x++){
+                Board.boardArray[y][x] = 0;
+            }
+        }
+        
+        for(y = 0; y < boardH; y++){
+            for(x = 0; x < boardW; x++){
+                Board.turnMoves[y][x] = 0;
+            }
+        } 
+        Board.totalThrees = {
+            1:0,
+            2:0
+        };
+        Board.hintColor=[];
+        Board.hintX=[];
+        Board.hintY=[];
+        ctx.clearRect(0,0,canvas.width,canvas.height);
+        
+        countTurn=0;
 
+        for(let i = 0;i<boardH;i++){
+            for(let j=0;j<boardW;j++){
+                
+                if(oldBoardArr[i][j]!=0 && !endGame){
+                    for(y=boardH-1; y>=0; y--){
+                        if(Board.boardArray[y][j] == 0){
+                            playMove(j, y,oldTurnArr[i][j]-1,oldBoardArr[i][j]);
+                            break;
+                        }
+                    }
+                    draw();
+                    updateHints();
+                }
+                
+
+                
+                
+                
+                
+                
+            }
+        }
+        
+        
+        paused=false;
+    }
 }
 
