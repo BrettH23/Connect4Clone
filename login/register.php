@@ -75,16 +75,17 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $conn2 = new mysqli(DB_SERVER, DB_USERNAME, DB_PASSWORD, DB_NAME);
                 
                 
-                $stmt2 = $conn2->prepare("INSERT INTO userdata (username, gamesWon, gamesPlayed, timePlayed) VALUES (?,?,?,?)");
+                $stmt2 = $conn2->prepare("INSERT INTO userdata (username, gamesWon, gamesPlayed, gamesLost, timePlayed) VALUES (?,?,?,?,?)");
                 if ($stmt==FALSE) {
                     echo "There is a problem with prepare <br>";
                     echo $conn2->error; // Need to connect/reconnect before the prepare call otherwise it doesnt work
                 }
-                $stmt2->bind_param("siii", $u2, $gw2,$gp2,$tp2);
+                $stmt2->bind_param("siiid", $u2, $gw2,$gp2,$gl2,$tp2);
                 
                 $u2 = $username;
                 $gw2 = 0;
                 $gp2 = 0;
+                $gl2 = 0;
                 $tp2 = 0;
                 $stmt2->execute();
 
@@ -121,7 +122,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <div>
         <h2 class="center">Sign Up</h2>
         <p>Please fill this form to create an account.</p>
-        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+        <form id="thisform" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <p <?php echo (!empty($username_err)) ? 'has-error' : ''; ?>">
                 <label>Username:<sup>*</sup></label>
                 <input type="text" name="username" value="<?php echo $username; ?>">
@@ -139,7 +140,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
             </p>
             <p onclick="document.querySelector('#thisform').submit()" >
                 Submit
-                <input type="submit"  value="Submit" hidden>
+                <input type="submit" hidden>
             </p>
             <p onclick="document.querySelector('#thisreset').click()">
                 Reset

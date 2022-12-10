@@ -11,13 +11,7 @@
     font-size: 70%;
 }
 
-.pop{
-    
-    border: 5px solid #FFF;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3));
-        
-    
-}
+
 
 canvas {
     padding-left: 0;

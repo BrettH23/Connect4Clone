@@ -12,7 +12,7 @@ if ($conn->multi_query($sql) === TRUE) {
     echo "Users created successfully";
 
 } else {
-echo "Error adding users: " . $conn2->error;
+	echo "Error adding users: " . $conn->error;
 }
 
 

@@ -4,7 +4,8 @@
         <title>Connect4Clone</title>
         <script src="../JS/game.js" defer></script> <!-- added defer after script source because you need to load the value after canvas is made-->
         <script src="../JS/options.js"></script>
-        
+        <script src="../JS/uploadGame.js"></script>
+
         <link rel="stylesheet" href="../style/universal.css"> 
         <link rel="stylesheet" href="../style/game.css"> 
         <style>
@@ -36,6 +37,7 @@
                     </section>
                     
                     <button id = "start" onclick="startGame(),hideOptions(),revealData()" style="visibility: hidden">Start Game</button><br>
+                    <button onClick="location.href='index.html'">Back to Menu</button>
                 </section>
                 
             </section>
@@ -49,18 +51,18 @@
                     <p>Player 1:</p>
                     <p id="p1-total-threes">has x threes</p>
                     <p id="p1-hints">Should target positions:</p>
-                    <button id="power1" onclick="superPower(1)">Flip the Game</button>
+                    <button id="power1" onclick="superPower(1)">Super Power</button>
                 </section><br>
                 <section id="p2-info" class="pop">
                     <p>Player 2:</p>
                     <p id="p2-total-threes">has x threes</p>
                     <p id="p2-hints">Should target positions:</p>
-                    <button id="power2" onclick="superPower(2)">Flip the Game</button>
+                    <button id="power2" onclick="superPower(2)">Super Power</button>
                 </section>
                
-                
+                <button onClick="location.href='index.html'">Back to Menu</button>
                 <button id ="destroy" onclick="destroyGame()" style="visibility: hidden">Play again?</button>
-                <button id ="menuButton" onClick="location.href='index.html'" style="visibility: hidden">Back to Menu</button>
+                
             </section>
         </aside>
         

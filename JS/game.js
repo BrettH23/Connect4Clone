@@ -56,7 +56,10 @@ function tickTimer(){
 
     if(timerAlive){
         timer.innerHTML = "Time Elapsed: "+minutes+':'+sec0 + seconds;
-        window.setTimeout(function() { tickTimer() }, 1000);
+        window.setTimeout(function() { tickTimer() }, 200);//Want higher precision for sake of uploading game
+    }else{
+        timer.innerHTML = "Time Elapsed: "+minutes+':'+sec0 + seconds;
+        uploadGame(x,victor);
     }
 }
 
@@ -92,39 +95,6 @@ function setUp(){
     updateHints();
 }
 
-function storeTile(color, tokenArray){
-    let colorR = parseInt(color.substring(1,3),16);
-    let colorG = parseInt(color.substring(3,5),16);
-    let colorB = parseInt(color.substring(5,7),16);
-    let selectedHSV = rgbTOhsv(colorR, colorG, colorB);
-
-    tile = [];
-    for(i=0;i<16;i++){
-        for(j=0;j<16;j++){
-            pos = i*4+j*16*4;
-            
-            let defaultHSV = rgbTOhsv (parseInt(tokenArray[pos],16),parseInt(tokenArray[pos+1],16),parseInt(tokenArray[pos+2],16));
-            
-            
-            let newV = (defaultHSV.v/100)*selectedHSV.v;
-            
-            thisRGB = hsvTOrgb(selectedHSV.h,selectedHSV.s,newV);
-            //console.log(thisRGB);
-            
-            
-            x = {
-                r:thisRGB.substring(1,3),
-                g:thisRGB.substring(3,5),
-                b:thisRGB.substring(5,7),
-                a:tokenArray[pos+3]
-            }
-            tile.push(x);
-            //console.log(x);
-        }
-    }
-    return {pixels:tile};
-}
-
 function setUpBoard(){
     Board.boardArray = [];
     for(y = 0; y < boardH; y++){
@@ -158,7 +128,39 @@ function setUpCanvas(){;
     }
     
 }
-//rgbTOhsv(49,47,66);
+function storeTile(color, tokenArray){
+    let colorR = parseInt(color.substring(1,3),16);
+    let colorG = parseInt(color.substring(3,5),16);
+    let colorB = parseInt(color.substring(5,7),16);
+    let selectedHSV = rgbTOhsv(colorR, colorG, colorB);
+
+    tile = [];
+    for(i=0;i<16;i++){
+        for(j=0;j<16;j++){
+            pos = i*4+j*16*4;
+            
+            let defaultHSV = rgbTOhsv (parseInt(tokenArray[pos],16),parseInt(tokenArray[pos+1],16),parseInt(tokenArray[pos+2],16));
+            
+            
+            let newV = (defaultHSV.v/100)*selectedHSV.v;
+            let newS = (defaultHSV.s/100)*selectedHSV.s;
+            
+            thisRGB = hsvTOrgb(selectedHSV.h,newS,newV);
+            //console.log(thisRGB);
+            
+            
+            x = {
+                r:thisRGB.substring(1,3),
+                g:thisRGB.substring(3,5),
+                b:thisRGB.substring(5,7),
+                a:tokenArray[pos+3]
+            }
+            tile.push(x);
+            //console.log(x);
+        }
+    }
+    return {pixels:tile};
+}
 function rgbTOhsv(r,g,b){
     r/=255;g/=255;b/=255;
     max = Math.max(r,g,b);
@@ -347,7 +349,6 @@ function checkWin(){
     if(winConditions()) {
         endGame = true
         document.getElementById("destroy").style.visibility = "visible";
-        document.getElementById("menuButton").style.visibility = "visible";
         timerAlive=false;
         return true;   
     }
@@ -357,7 +358,6 @@ function checkTie() { // very easy way to check for a tie game. Full board and n
     if(countTurn == boardW * boardH){
         endGame = true;
         document.getElementById("destroy").style.visibility = "visible";
-        document.getElementById("menuButton").style.visibility = "visible";
         timerAlive=false;
         return true;  
     }

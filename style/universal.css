@@ -16,3 +16,10 @@ button{
     padding: 2px;
     margin: 5px;
 }
+.pop{
+    
+    border: 5px solid #FFF;
+    background-color: rgba(0, 0, 0, 0.3);
+        
+    
+}
