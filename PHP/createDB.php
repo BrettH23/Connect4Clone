@@ -40,4 +40,5 @@ $sql = "CREATE TABLE IF NOT EXISTS userdata (
   }
 
 $conn->close();
+//header("Location: ../index.php")
 ?>
