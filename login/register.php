@@ -116,7 +116,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST"){
     <meta charset="UTF-8">
     <title>Sign Up</title>
     <link rel="stylesheet" href="../style/universal.css"> 
-    <link rel="stylesheet" href="../style/index.css"> 
+    <link rel="stylesheet" href="../style/index.css">
+    <link rel="icon" href="../favicon.ico" type="image/ico"> 
 </head>
 <body>
     <div>

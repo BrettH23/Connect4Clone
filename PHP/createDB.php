@@ -34,9 +34,9 @@ $sql = "CREATE TABLE IF NOT EXISTS userdata (
     )";
     
     if ($conn->query($sql) === TRUE) {
-      echo "table created successfully<br>";
+      echo "Userdata table created successfully<br>";
   } else {
-      echo "Error creating table: " . $conn->error ."<br>";
+      echo "Error creating userdata table: " . $conn->error ."<br>";
   }
 
 $conn->close();

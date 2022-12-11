@@ -9,7 +9,7 @@ $sql.= "INSERT INTO userdata (username, gamesWon, gamesPlayed, gamesLost, timePl
 
 
 if ($conn->multi_query($sql) === TRUE) {
-    echo "Users created successfully";
+    echo "User data populated successfully";
 
 } else {
 	echo "Error adding users: " . $conn->error;
